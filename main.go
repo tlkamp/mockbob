@@ -1,6 +1,6 @@
 package main
 
-import "./cmd"
+import "github.com/tlkamp/mockbob/cmd"
 
 func main() {
 	cmd.Execute()

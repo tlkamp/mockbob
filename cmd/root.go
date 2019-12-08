@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"../internal"
 	"github.com/spf13/cobra"
+	"github.com/tlkamp/mockbob/internal"
 )
 
 var startCaps bool
