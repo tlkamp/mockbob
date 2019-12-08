@@ -5,9 +5,10 @@ jobs:
       - image: circleci/golang:1.12
 
     working_directory: /go/src/github.com/tlkamp/mockbob
+    environment:
+      - GO111MODULE: on
     steps:
       - checkout
-      - run: go get ./...
       - run:
           name: Go vet
           command: go vet . ./cmd ./internal
