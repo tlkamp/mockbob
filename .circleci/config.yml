@@ -15,7 +15,7 @@ jobs:
             mkdir -p /tmp/artifacts
             go test -covermode=count -coverprofile=count.out ./...
             go tool cover -func=count.out
-            go tool cover -html=count.out
+            go tool cover -html=count.out -o coverage.html
             mv coverage.html /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
