@@ -1,9 +1,13 @@
 # mockbob
+
 A CLI tool for generating Spongebob meme text.
 
 Because sometimes manually typing out that format takes too many braincells.
 
 ## Usage
+
+> Note: Stdin takes precedence over argument provided values
+
 To use `mockbob`, simply call it in your terminal.
 
 ```shell
@@ -14,25 +18,41 @@ hErPaDeRp
 For multiple words, use quotes:
 
 ```shell
+# Arg
 $ mockbob "do you even lift bro"
+dO yOu EvEn LiFt BrO
+
+# Stdin
+$ echo "do you even lift bro" | mockbob
 dO yOu EvEn LiFt BrO
 ```
 
 `mockbob` will preserve punctuation:
 
 ```shell
-mockbob "do you even lift bro?"
+# Arg
+$ mockbob "do you even lift bro?"
 dO yOu EvEn LiFt BrO?
+
+# Stdin
+$ echo "do you even lift bro?" | mockbob
+dO yOu EvEn LiFt Bro?
 ```
 
 And if you want to start off with capital letters, pass the `-c` flag.
 
 ```shell
+# Arg
 $ mockbob -c "do you even lift bro?"
+Do YoU eVeN lIfT bRo?
+
+# Stdin
+$ echo "do you even lift bro?" | mockbob -c
 Do YoU eVeN lIfT bRo?
 ```
 
 ## Installation
+
 To install this module, simply run:
 
 ```shell
