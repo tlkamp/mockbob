@@ -21,7 +21,7 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts
       - store_test_results:
-          path: /tmp/artifacts/test-results.xml
+          path: /tmp/artifacts
       - run:
           name: Build
           command: go build
