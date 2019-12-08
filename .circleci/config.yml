@@ -10,8 +10,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Go vet
-          command: go vet . ./cmd ./internal
+          name: Test
+          command: go test ./...
       - run:
           name: Build
           command: go build
