@@ -10,8 +10,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Test
-          command: go test ./...
+          name: Code Coverage
+          command: |
+            mkdir -p /tmp/artifacts
+            go test -covermode=count -coverprofile=count.out ./...
+            go tool cover -func=count.out
+            go tool cover -html=count.out
+            mv coverage.html /tmp/artifacts
+      - store_artifacts:
+          path: /tmp/artifacts
       - run:
           name: Build
           command: go build
