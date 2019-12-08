@@ -6,7 +6,7 @@ jobs:
 
     working_directory: /go/src/github.com/tlkamp/mockbob
     environment:
-      - GO111MODULE: on
+      GO111MODULE: "on"
     steps:
       - checkout
       - run:
