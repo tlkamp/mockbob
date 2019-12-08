@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/tlkamp/mockbob.svg?style=svg)](https://circleci.com/gh/tlkamp/mockbob)
+
 # mockbob
 
 A CLI tool for generating Spongebob meme text.
