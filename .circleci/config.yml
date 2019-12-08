@@ -12,13 +12,16 @@ jobs:
       - run:
           name: Code Coverage
           command: |
+            go get gotest.tools/gotestsum
             mkdir -p /tmp/artifacts
-            go test -covermode=count -coverprofile=count.out ./...
+            gotestsum --junitfile test-results.xml -- -covermode=count -coverprofile=count.out ./...
             go tool cover -func=count.out
             go tool cover -html=count.out -o coverage.html
-            mv coverage.html /tmp/artifacts
+            mv coverage.html test-results.xml /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
+      - store_test_results:
+          path: /tmp/artifacts/test-results.xml
       - run:
           name: Build
           command: go build
