@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"bufio"
+	"os"
 	"strings"
 	"unicode"
 )
@@ -46,4 +48,24 @@ func bool2int(in bool) int {
 	}
 
 	return 0
+}
+
+func IsStdin() bool {
+	stat, _ := os.Stdin.Stat()
+	return (stat.Mode() & os.ModeCharDevice) == 0
+}
+
+func ReadStdin() (string, error) {
+	scanner := bufio.NewScanner(os.Stdin)
+	text := ""
+
+	if scanner.Err() != nil {
+		return text, scanner.Err()
+	}
+
+	for scanner.Scan() {
+		text += scanner.Text()
+	}
+
+	return text, nil
 }
