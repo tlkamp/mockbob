@@ -32,3 +32,28 @@ $ mockbob -c "do you even lift bro?"
 Do YoU eVeN lIfT bRo?
 ```
 
+## Installation
+To install this module, simply run:
+
+```shell
+$ go get github.com/tlkamp/mockbob
+
+# mockbob is now available in your terminal
+$ which mockbob
+/Users/traci/go/bin/mockbob
+
+$ mockbob -h
+mockbob will take any set of input text, and return it in a Spongebob meme mocking format.
+        Examples:
+        mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
+        mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
+        mockbob herpderp -> hErPdErP
+        mockbob -c herpderp -> HeRpDeRp
+
+Usage:
+  mockbob [word or sentence (quoted)] [flags]
+
+Flags:
+  -h, --help         help for mockbob
+  -c, --start-caps   start the text with a capital letter
+```
