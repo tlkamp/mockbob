@@ -2,6 +2,8 @@
 
 # mockbob
 
+![mascot](doc/gopher.png)
+
 A CLI tool for generating Spongebob meme text.
 
 Because sometimes manually typing out that format takes too many braincells.
