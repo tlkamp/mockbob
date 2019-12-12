@@ -3,43 +3,24 @@ package internal
 import (
 	"bufio"
 	"os"
-	"strings"
 	"unicode"
 )
 
 func Bobify(input string, caps bool) string {
-	cap := bool2int(!caps)
-	spaces := spaceIndices(input)
-	input = strings.ReplaceAll(strings.ToLower(input), " ", "")
+	cap := bool2int(!caps) // boolean inverted because 1 = true, and we're using modulus, so it will select the wrong character indicies if not inverted
 	runes := []rune(input)
-
-	// auto-invert the boolean
-	for i := 0; i < len(runes); i++ {
-		if i%2 == cap {
-			runes[i] = unicode.ToUpper(runes[i])
-		}
-	}
-
-	for i := 0; i < len(spaces); i++ {
-		s := spaces[i]
-		runes = append(runes, 0 /* use the zero value of the element type */)
-		copy(runes[s+1:], runes[s:])
-		runes[s] = rune(' ')
-	}
-
-	return string(runes)
-}
-
-func spaceIndices(input string) []int {
-	runes := []rune(input)
-	var ind []int
 
 	for i := 0; i < len(runes); i++ {
 		if unicode.IsSpace(runes[i]) {
-			ind = append(ind, i)
+			cap = (cap + 1) % 2 // change the value of cap to flip indicies if we encounter a space while processing
+			continue
+		}
+
+		if i%2 == cap { // using cap this way allows us to keep code DRY and invert the boolean condition when we encounter spaces
+			runes[i] = unicode.ToUpper(runes[i])
 		}
 	}
-	return ind
+	return string(runes)
 }
 
 func bool2int(in bool) int {
