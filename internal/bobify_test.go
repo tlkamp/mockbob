@@ -19,7 +19,15 @@ func TestBobifyCaps(t *testing.T) {
 	want := "HeRpAdErP"
 	got := Bobify("herpaderp", true)
 	if got != want {
-		t.Errorf("Bobify(\"herpaderp\", true = %s; want %s", got, want)
+		t.Errorf("Bobify(\"herpaderp\", true) = %s; want %s", got, want)
+	}
+}
+
+func TestBobifySpaces(t *testing.T) {
+	want := "dO yOu EvEn LiFt BrO"
+	got := Bobify("do you even lift bro", false)
+	if got != want {
+		t.Errorf("Bobify(\"do you even lift bro\", false) = %s; want %s", got, want)
 	}
 }
 
@@ -62,12 +70,4 @@ func mockStdin(content string) {
 	}
 
 	os.Stdin = tmpfile
-}
-
-func TestBobifySpaces(t *testing.T) {
-	want := "dO yOu EvEn LiFt BrO"
-	got := Bobify("do you even lift bro", false)
-	if got != want {
-		t.Errorf("Bobify(\"do you even lift bro\", true = %s; want %s", got, want)
-	}
 }
