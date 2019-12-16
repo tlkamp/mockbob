@@ -1,5 +1,4 @@
-[![CircleCI](https://circleci.com/gh/tlkamp/mockbob.svg?style=svg)](https://circleci.com/gh/tlkamp/mockbob)  
-[![Go Report Card](https://goreportcard.com/badge/github.com/tlkamp/mockbob)](https://goreportcard.com/report/github.com/tlkamp/mockbob)
+[![CircleCI](https://circleci.com/gh/tlkamp/mockbob.svg?style=svg)](https://circleci.com/gh/tlkamp/mockbob) [![Go Report Card](https://goreportcard.com/badge/github.com/tlkamp/mockbob)](https://goreportcard.com/report/github.com/tlkamp/mockbob)
 
 # mockbob
 
