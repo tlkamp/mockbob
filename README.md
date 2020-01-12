@@ -8,6 +8,9 @@ A CLI tool for generating Spongebob meme text.
 
 Because sometimes manually typing out that format takes too many braincells.
 
+## Demo
+![mockbob](https://user-images.githubusercontent.com/18516698/72223486-eed92080-3534-11ea-94df-b9d5ae48e43f.gif)
+
 ## Usage
 
 > Note: Stdin takes precedence over argument provided values
