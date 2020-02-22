@@ -15,7 +15,12 @@ jobs:
       - image: circleci/golang:1.13
     steps:
       - checkout
-      - run: Date=$(date +"%F %X") Rev=$(git rev-parse HEAD) curl -sL https://git.io/goreleaser | bash
+      - run:
+          name: goreleaser
+          command: |
+          export Date=$(date +"%F %X")
+          export Rev=$(git rev-parse HEAD)
+          curl -sL https://git.io/goreleaser | bash
 
   build:
     docker:
