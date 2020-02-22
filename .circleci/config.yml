@@ -18,9 +18,9 @@ jobs:
       - run:
           name: goreleaser
           command: |
-          export Date=$(date +"%F %X")
-          export Rev=$(git rev-parse HEAD)
-          curl -sL https://git.io/goreleaser | bash
+            export Date=$(date +"%F %X")
+            export Rev=$(git rev-parse HEAD)
+            curl -sL https://git.io/goreleaser | bash
 
   build:
     docker:
