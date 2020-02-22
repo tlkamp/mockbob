@@ -3,3 +3,5 @@
 !**/*.md
 !**/
 !LICENSE
+!Makefile
+!.goreleaser.yml

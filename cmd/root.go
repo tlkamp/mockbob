@@ -8,7 +8,26 @@ import (
 	"github.com/tlkamp/mockbob/internal"
 )
 
-var startCaps bool
+var (
+	versionInfo string = "No version specified"
+	gitRev      string = "No revision specified"
+	buildDate   string = "No date specified"
+
+	versionMessage string = fmt.Sprintf(`Version: %v
+Revision: %v
+Build Date: %v`, versionInfo, gitRev, buildDate)
+
+	startCaps bool
+)
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Display information about the version of mockbob.",
+	Long:  `Displays version information about mockbob, including information from the SCM, git.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(versionMessage)
+	},
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "mockbob [word or sentence (quoted)]",
@@ -55,4 +74,5 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().BoolVarP(&startCaps, "start-caps", "c", false, "start the text with a capital letter")
+	rootCmd.AddCommand(versionCmd)
 }
