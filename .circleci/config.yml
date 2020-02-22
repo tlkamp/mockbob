@@ -1,8 +1,24 @@
 version: 2
+workflows:
+  main:
+    jobs:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
 jobs:
+  release:
+    docker:
+      - image: circleci/golang:1.13
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash
+
   build:
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:1.13
 
     working_directory: /go/src/github.com/tlkamp/mockbob
     environment:
