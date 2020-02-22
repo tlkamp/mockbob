@@ -17,7 +17,7 @@ build:
 	go build
 
 release:
-	go build -ldflags="-X 'github.com/tlkamp/mockbob/cmd.versionInfo=$(TAG)' -X 'github.com/tlkamp/mockbob/cmd.gitRev=$(REV)' -X 'github.com/tlkamp/mockbob/cmd.buildDate=$(DATE)'"
+	@go build -ldflags="-X 'github.com/tlkamp/mockbob/cmd.versionInfo=$(TAG)' -X 'github.com/tlkamp/mockbob/cmd.gitRev=$(REV)' -X 'github.com/tlkamp/mockbob/cmd.buildDate=$(DATE)'"
 
 safe-clean:
 	@git clean -Xi
