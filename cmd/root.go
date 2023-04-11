@@ -27,6 +27,8 @@ var versionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(versionMessage)
 	},
+	Hidden: true,
+	Deprecated: "version is deprecated and will be removed.",
 }
 
 var rootCmd = &cobra.Command{
