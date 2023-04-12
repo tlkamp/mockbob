@@ -17,7 +17,8 @@ var (
 Revision: %v
 Build Date: %v`, versionInfo, gitRev, buildDate)
 
-	startCaps bool
+	startCaps  bool
+	randomCaps bool
 )
 
 var versionCmd = &cobra.Command{
@@ -27,6 +28,12 @@ var versionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(versionMessage)
 	},
+	Hidden:     true,
+	Deprecated: "version is deprecated and will be removed.",
+}
+
+type Bob interface {
+	Bobify(string) string
 }
 
 var rootCmd = &cobra.Command{
@@ -40,6 +47,14 @@ var rootCmd = &cobra.Command{
 	mockbob -c herpderp -> HeRpDeRp`,
 	Args: cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
+		var b Bob
+
+		b = &internal.Bobifier{StartCaps: startCaps}
+
+		if randomCaps {
+			b = &internal.RandomBobifier{}
+		}
+
 		result := ""
 		// Validate if stdin passed
 		if internal.IsStdin() {
@@ -49,14 +64,14 @@ var rootCmd = &cobra.Command{
 				os.Exit(1)
 			}
 			// Convert stdin text
-			result = internal.Bobify(stdin, startCaps)
+			result = b.Bobify(stdin)
 		} else {
 			// If no stdin, ensure an arg is passed to consume
 			if len(args) < 1 {
 				// If cli invoked without data, show help panel
 				cmd.Help()
 			} else {
-				result = internal.Bobify(args[0], startCaps)
+				result = b.Bobify(args[0])
 			}
 		}
 		fmt.Println(result)
@@ -74,5 +89,6 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().BoolVarP(&startCaps, "start-caps", "c", false, "start the text with a capital letter")
+	rootCmd.Flags().BoolVarP(&randomCaps, "random-caps", "r", false, "randomize the capital letters through the text")
 	rootCmd.AddCommand(versionCmd)
 }
