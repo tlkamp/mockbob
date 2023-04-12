@@ -8,26 +8,29 @@ import (
 )
 
 func TestBobifyNoCaps(t *testing.T) {
+	b := &Bobifier{}
 	want := "hErPaDeRp"
-	got := Bobify("herpaderp", false)
+	got := b.Bobify("herpaderp")
 	if got != want {
-		t.Errorf("Bobify(\"herpaderp\", false) = %s; want %s", got, want)
+		t.Errorf("got %s; want %s", got, want)
 	}
 }
 
 func TestBobifyCaps(t *testing.T) {
+	b := &Bobifier{StartCaps: true}
 	want := "HeRpAdErP"
-	got := Bobify("herpaderp", true)
+	got := b.Bobify("herpaderp")
 	if got != want {
-		t.Errorf("Bobify(\"herpaderp\", true) = %s; want %s", got, want)
+		t.Errorf("got %s; want %s", got, want)
 	}
 }
 
 func TestBobifySpaces(t *testing.T) {
+	b := &Bobifier{}
 	want := "dO yOu EvEn LiFt BrO"
-	got := Bobify("do you even lift bro", false)
+	got := b.Bobify("do you even lift bro")
 	if got != want {
-		t.Errorf("Bobify(\"do you even lift bro\", false) = %s; want %s", got, want)
+		t.Errorf("got = %s; want %s", got, want)
 	}
 }
 

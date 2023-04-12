@@ -2,12 +2,18 @@ package internal
 
 import (
 	"bufio"
+	"math/rand"
 	"os"
+	"time"
 	"unicode"
 )
 
-func Bobify(input string, caps bool) string {
-	cap := bool2int(!caps) // boolean inverted because 1 = true, and we're using modulus, so it will select the wrong character indicies if not inverted
+type Bobifier struct {
+	StartCaps bool
+}
+
+func (b *Bobifier) Bobify(input string) string {
+	cap := bool2int(!b.StartCaps) // boolean inverted because 1 = true, and we're using modulus, so it will select the wrong character indicies if not inverted
 	runes := []rune(input)
 
 	for i := 0; i < len(runes); i++ {
@@ -20,6 +26,29 @@ func Bobify(input string, caps bool) string {
 			runes[i] = unicode.ToUpper(runes[i])
 		}
 	}
+	return string(runes)
+}
+
+type RandomBobifier struct{}
+
+func (r *RandomBobifier) Bobify(input string) string {
+	s := rand.NewSource(time.Now().UnixNano())
+	ran := rand.New(s)
+	runes := []rune(input)
+
+	for i := 0; i < len(runes); i++ {
+		if unicode.IsSpace(runes[i]) {
+			continue
+		}
+
+		// Random number 1-100
+		if randInt := ran.Intn(100); randInt <= 50 {
+			continue
+		}
+
+		runes[i] = unicode.ToUpper(runes[i])
+	}
+
 	return string(runes)
 }
 
