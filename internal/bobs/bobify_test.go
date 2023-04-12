@@ -1,4 +1,4 @@
-package internal
+package bobs
 
 import (
 	"io/ioutil"

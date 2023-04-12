@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/tlkamp/mockbob/internal"
+	internal "github.com/tlkamp/mockbob/internal/bobs"
 )
 
 var (
