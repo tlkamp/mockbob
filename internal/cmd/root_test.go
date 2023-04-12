@@ -1,4 +1,4 @@
-package internal
+package cmd
 
 import (
 	"io/ioutil"
@@ -7,37 +7,10 @@ import (
 	"testing"
 )
 
-func TestBobifyNoCaps(t *testing.T) {
-	b := &Bobifier{}
-	want := "hErPaDeRp"
-	got := b.Bobify("herpaderp")
-	if got != want {
-		t.Errorf("got %s; want %s", got, want)
-	}
-}
-
-func TestBobifyCaps(t *testing.T) {
-	b := &Bobifier{StartCaps: true}
-	want := "HeRpAdErP"
-	got := b.Bobify("herpaderp")
-	if got != want {
-		t.Errorf("got %s; want %s", got, want)
-	}
-}
-
-func TestBobifySpaces(t *testing.T) {
-	b := &Bobifier{}
-	want := "dO yOu EvEn LiFt BrO"
-	got := b.Bobify("do you even lift bro")
-	if got != want {
-		t.Errorf("got = %s; want %s", got, want)
-	}
-}
-
 func TestIsStdin(t *testing.T) {
 	mockStdin("data")
 	want := true
-	got := IsStdin()
+	got := isStdin()
 	if got != want {
 		t.Errorf("IsStdin(), true = %v; want %v", got, want)
 	}
@@ -47,7 +20,7 @@ func TestReadStdin(t *testing.T) {
 	mockData := "data"
 	mockStdin(mockData)
 	want := mockData
-	got, err := ReadStdin()
+	got, err := readStdin()
 	if err != nil {
 		t.Error(err)
 	}

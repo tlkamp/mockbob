@@ -62,8 +62,8 @@ Do YoU eVeN lIfT bRo?
 
 To install this module, simply run:
 
-```shell
-$ go get github.com/tlkamp/mockbob
+```console
+$ go install github.com/tlkamp/mockbob@latest
 
 # mockbob is now available in your terminal
 $ which mockbob
@@ -71,16 +71,26 @@ $ which mockbob
 
 $ mockbob -h
 mockbob will take any set of input text, and return it in a Spongebob meme mocking format.
-        Examples:
-        mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
-        mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
-        mockbob herpderp -> hErPdErP
-        mockbob -c herpderp -> HeRpDeRp
+
+Examples:
+  mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
+  mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
+  mockbob herpderp -> hErPdErP
+  mockbob -c herpderp -> HeRpDeRp
+  mockbob -r herpaderp ->HerPAdErP
 
 Usage:
   mockbob [word or sentence (quoted)] [flags]
+  mockbob [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
 
 Flags:
-  -h, --help         help for mockbob
-  -c, --start-caps   start the text with a capital letter
+  -h, --help          help for mockbob
+  -r, --random-caps   randomize the capital letters through the text
+  -c, --start-caps    start the text with a capital letter
+
+Use "mockbob [command] --help" for more information about a command.
 ```
