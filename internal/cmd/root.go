@@ -1,11 +1,12 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
-	internal "github.com/tlkamp/mockbob/internal/bobs"
+	"github.com/tlkamp/mockbob/internal/bobs"
 )
 
 var (
@@ -33,6 +34,7 @@ var versionCmd = &cobra.Command{
 }
 
 type Bob interface {
+	// Bobify accepts a string as input and returns the bobified version.
 	Bobify(string) string
 }
 
@@ -40,28 +42,29 @@ var rootCmd = &cobra.Command{
 	Use:   "mockbob [word or sentence (quoted)]",
 	Short: "Generate alternating-case text for Spongebob memes.",
 	Long: `mockbob will take any set of input text, and return it in a Spongebob meme mocking format.
-	Examples:
-	mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
-	mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
-	mockbob herpderp -> hErPdErP
-	mockbob -c herpderp -> HeRpDeRp`,
+
+Examples:
+  mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
+  mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
+  mockbob herpderp -> hErPdErP
+  mockbob -c herpderp -> HeRpDeRp
+  mockbob -r herpaderp ->HerPAdErP`,
 	Args: cobra.ArbitraryArgs,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var b Bob
 
-		b = &internal.Bobifier{StartCaps: startCaps}
+		b = bobs.NewStandardBobifier(startCaps)
 
 		if randomCaps {
-			b = &internal.RandomBobifier{}
+			b = bobs.NewRandomBobifier()
 		}
 
 		result := ""
 		// Validate if stdin passed
-		if internal.IsStdin() {
-			stdin, err := internal.ReadStdin()
+		if isStdin() {
+			stdin, err := readStdin()
 			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
+				return err
 			}
 			// Convert stdin text
 			result = b.Bobify(stdin)
@@ -74,7 +77,8 @@ var rootCmd = &cobra.Command{
 				result = b.Bobify(args[0])
 			}
 		}
-		fmt.Println(result)
+		cmd.Println(result)
+		return nil
 	},
 }
 
@@ -91,4 +95,24 @@ func init() {
 	rootCmd.Flags().BoolVarP(&startCaps, "start-caps", "c", false, "start the text with a capital letter")
 	rootCmd.Flags().BoolVarP(&randomCaps, "random-caps", "r", false, "randomize the capital letters through the text")
 	rootCmd.AddCommand(versionCmd)
+}
+
+func isStdin() bool {
+	stat, _ := os.Stdin.Stat()
+	return (stat.Mode() & os.ModeCharDevice) == 0
+}
+
+func readStdin() (string, error) {
+	scanner := bufio.NewScanner(os.Stdin)
+	text := ""
+
+	if scanner.Err() != nil {
+		return text, scanner.Err()
+	}
+
+	for scanner.Scan() {
+		text += scanner.Text()
+	}
+
+	return text, nil
 }
