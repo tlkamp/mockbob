@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/tlkamp/mockbob.svg?style=svg)](https://circleci.com/gh/tlkamp/mockbob) [![Go Report Card](https://goreportcard.com/badge/github.com/tlkamp/mockbob)](https://goreportcard.com/report/github.com/tlkamp/mockbob)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tlkamp/mockbob)](https://goreportcard.com/report/github.com/tlkamp/mockbob)
 
 # mockbob
 
@@ -26,11 +26,11 @@ For multiple words, use quotes:
 
 ```shell
 # Arg
-$ mockbob "do you even lift bro"
+$ mockbob do you even lift bro
 dO yOu EvEn LiFt BrO
 
 # Stdin
-$ echo "do you even lift bro" | mockbob
+$ echo do you even lift bro | mockbob
 dO yOu EvEn LiFt BrO
 ```
 
@@ -38,11 +38,11 @@ dO yOu EvEn LiFt BrO
 
 ```shell
 # Arg
-$ mockbob "do you even lift bro?"
+$ mockbob 'do you even lift bro?'
 dO yOu EvEn LiFt BrO?
 
 # Stdin
-$ echo "do you even lift bro?" | mockbob
+$ echo 'do you even lift bro?' | mockbob
 dO yOu EvEn LiFt Bro?
 ```
 
@@ -80,17 +80,10 @@ Examples:
   mockbob -r herpaderp ->HerPAdErP
 
 Usage:
-  mockbob [word or sentence (quoted)] [flags]
-  mockbob [command]
-
-Available Commands:
-  completion  Generate the autocompletion script for the specified shell
-  help        Help about any command
+  mockbob [word or sentence] [flags]
 
 Flags:
   -h, --help          help for mockbob
   -r, --random-caps   randomize the capital letters through the text
   -c, --start-caps    start the text with a capital letter
-
-Use "mockbob [command] --help" for more information about a command.
 ```
