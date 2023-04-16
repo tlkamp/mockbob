@@ -1,32 +1,37 @@
 package cmd
 
 import (
+	"bytes"
 	"io/ioutil"
 	"log"
 	"os"
+	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIsStdin(t *testing.T) {
 	mockStdin("data")
-	want := true
-	got := isStdin()
-	if got != want {
-		t.Errorf("IsStdin(), true = %v; want %v", got, want)
-	}
+	assert.True(t, isStdin())
 }
 
-func TestReadStdin(t *testing.T) {
-	mockData := "data"
-	mockStdin(mockData)
-	want := mockData
-	got, err := readStdin()
-	if err != nil {
-		t.Error(err)
+func TestChanneler(t *testing.T) {
+	b := new(bytes.Buffer)
+	b.WriteString("test\n123")
+
+	c := channeler(b)
+
+	r := make([]string, 0, 2)
+
+	for s := range c {
+		r = append(r, s)
 	}
-	if got != want {
-		t.Errorf("ReadStdin(), true = %v; want %v", got, want)
-	}
+
+	expected := []string{"test\n", "123"}
+
+	assert.Equal(t, 2, len(r))
+	assert.True(t, reflect.DeepEqual(r, expected))
 }
 
 func mockStdin(content string) {

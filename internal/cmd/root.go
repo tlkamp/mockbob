@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -44,12 +45,10 @@ Examples:
 
 		// Validate if stdin passed
 		if isStdin() {
-			input, err := readStdin()
-			if err != nil {
-				return err
+			c := channeler(cmd.InOrStdin())
+			for s := range c {
+				fmt.Print(b.Bobify((s)))
 			}
-
-			cmd.Println(b.Bobify(input))
 			return nil
 		}
 
@@ -63,6 +62,30 @@ Examples:
 		cmd.Println(b.Bobify(input))
 		return nil
 	},
+}
+
+func channeler(r io.Reader) <-chan string {
+	ch := make(chan string)
+
+	go func() {
+		buf := bufio.NewReader(r)
+
+		for {
+			l, err := buf.ReadString('\n')
+			if l != "" {
+				ch <- l
+			}
+
+			if err != nil {
+				break
+			}
+		}
+
+		close(ch)
+
+	}()
+
+	return ch
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -82,19 +105,4 @@ func init() {
 func isStdin() bool {
 	stat, _ := os.Stdin.Stat()
 	return (stat.Mode() & os.ModeCharDevice) == 0
-}
-
-func readStdin() (string, error) {
-	scanner := bufio.NewScanner(os.Stdin)
-	text := ""
-
-	if scanner.Err() != nil {
-		return text, scanner.Err()
-	}
-
-	for scanner.Scan() {
-		text += scanner.Text()
-	}
-
-	return text, nil
 }
