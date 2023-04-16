@@ -1,7 +1,5 @@
-**/*
-!**/*.go
-!**/*.md
-!**/
-!LICENSE
-!Makefile
-!.goreleaser.yml
+mockbob
+.vscode/
+.git/
+.DS_Store
+.coverage.txt
