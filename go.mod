@@ -1,6 +1,6 @@
 module github.com/tlkamp/mockbob
 
-go 1.18
+go 1.23
 
 require (
 	github.com/spf13/cobra v1.8.1
