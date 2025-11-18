@@ -15,6 +15,7 @@ import (
 var (
 	startCaps  bool
 	randomCaps bool
+	leet       bool
 )
 
 type Bob interface {
@@ -32,7 +33,8 @@ Examples:
   mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
   mockbob herpderp -> hErPdErP
   mockbob -c herpderp -> HeRpDeRp
-  mockbob -r herpaderp ->HerPAdErP`,
+  mockbob -r herpaderp -> HerPAdErP
+  mockbob -l herpaderp -> h3rp4d3rp`,
 	Args: cobra.ArbitraryArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var b Bob
@@ -41,6 +43,10 @@ Examples:
 
 		if randomCaps {
 			b = bobs.NewRandomBobifier()
+		}
+
+		if leet {
+			b = bobs.NewLeetBobifier()
 		}
 
 		// Validate if stdin passed
@@ -100,6 +106,7 @@ func Execute() {
 func init() {
 	rootCmd.Flags().BoolVarP(&startCaps, "start-caps", "c", false, "start the text with a capital letter")
 	rootCmd.Flags().BoolVarP(&randomCaps, "random-caps", "r", false, "randomize the capital letters through the text")
+	rootCmd.Flags().BoolVarP(&leet, "leet", "l", false, "convert text to 1337 5p34k")
 }
 
 func isStdin() bool {
