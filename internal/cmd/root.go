@@ -9,7 +9,11 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/tlkamp/mockbob/internal/bobs"
+
+	l "github.com/tlkamp/mockbob/internal/adapters/bobs/leet"
+	r "github.com/tlkamp/mockbob/internal/adapters/bobs/random"
+	st "github.com/tlkamp/mockbob/internal/adapters/bobs/standard"
+	"github.com/tlkamp/mockbob/internal/core/ports"
 )
 
 var (
@@ -17,11 +21,6 @@ var (
 	randomCaps bool
 	leet       bool
 )
-
-type Bob interface {
-	// Bobify accepts a string as input and returns the bobified version.
-	Bobify(string) string
-}
 
 var rootCmd = &cobra.Command{
 	Use:   "mockbob [word or sentence]",
@@ -37,16 +36,16 @@ Examples:
   mockbob -l herpaderp -> h3rp4d3rp`,
 	Args: cobra.ArbitraryArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var b Bob
+		var b ports.Bob
 
-		b = bobs.NewStandardBobifier(startCaps)
+		b = st.NewStandardBobifier(startCaps)
 
 		if randomCaps {
-			b = bobs.NewRandomBobifier()
+			b = r.NewRandomBobifier()
 		}
 
 		if leet {
-			b = bobs.NewLeetBobifier()
+			b = l.NewLeetBobifier()
 		}
 
 		// Validate if stdin passed
