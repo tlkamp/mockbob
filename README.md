@@ -22,7 +22,7 @@ $ mockbob herpaderp
 hErPaDeRp
 ```
 
-For multiple words, use quotes:
+It supports multiple words, with no quotes necessary:
 
 ```shell
 # Arg
@@ -50,7 +50,7 @@ And if you want to start off with capital letters, pass the `-c` flag.
 
 ```shell
 # Arg
-$ mockbob -c "do you even lift bro?"
+$ mockbob -c do you even lift bro?
 Do YoU eVeN lIfT bRo?
 
 # Stdin
@@ -62,7 +62,7 @@ Do YoU eVeN lIfT bRo?
 
 To install this module, simply run:
 
-```console
+```shell
 $ go install github.com/tlkamp/mockbob@latest
 
 # mockbob is now available in your terminal
@@ -73,17 +73,22 @@ $ mockbob -h
 mockbob will take any set of input text, and return it in a Spongebob meme mocking format.
 
 Examples:
-  mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
-  mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
-  mockbob herpderp -> hErPdErP
-  mockbob -c herpderp -> HeRpDeRp
-  mockbob -r herpaderp ->HerPAdErP
+  mockbob herpderp     -> hErPdErP
+
+  mockbob herp a derp  -> hErP a DeRp
+  
+  mockbob -c herpderp  -> HeRpDeRp
+  mockbob -r herpaderp -> HerPAdErP
+  mockbob -l herpaderp -> h3rp4d3rp
+
+  echo "herpaderp" | mockbob   -> hErPdErP
 
 Usage:
   mockbob [word or sentence] [flags]
 
 Flags:
   -h, --help          help for mockbob
+  -l, --leet          convert text to 1337 5p34k
   -r, --random-caps   randomize the capital letters through the text
   -c, --start-caps    start the text with a capital letter
 ```

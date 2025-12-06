@@ -1,4 +1,4 @@
-package bobs
+package standard
 
 import "unicode"
 
