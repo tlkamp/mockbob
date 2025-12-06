@@ -1,18 +1,18 @@
 package cmd
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
 
-	l "github.com/tlkamp/mockbob/internal/adapters/bobs/leet"
-	r "github.com/tlkamp/mockbob/internal/adapters/bobs/random"
-	st "github.com/tlkamp/mockbob/internal/adapters/bobs/standard"
+	leetBob "github.com/tlkamp/mockbob/internal/adapters/bobs/leet"
+	"github.com/tlkamp/mockbob/internal/adapters/bobs/random"
+	"github.com/tlkamp/mockbob/internal/adapters/bobs/standard"
+	"github.com/tlkamp/mockbob/internal/channeler"
+	"github.com/tlkamp/mockbob/internal/core/domain"
 	"github.com/tlkamp/mockbob/internal/core/ports"
 )
 
@@ -22,37 +22,47 @@ var (
 	leet       bool
 )
 
+const (
+	startCapsFlag  = "start-caps"
+	randomCapsFlag = "random-caps"
+	leetFlag       = "leet"
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "mockbob [word or sentence]",
 	Short: "Generate alternating-case text for Spongebob memes.",
 	Long: `mockbob will take any set of input text, and return it in a Spongebob meme mocking format.
 
 Examples:
-  mockbob "do you even lift bro" -> dO yOu EvEn LiFt BrO
-  mockbob -c "do you even lift bro" -> Do YoU eVeN lIfT bRo
-  mockbob herpderp -> hErPdErP
-  mockbob -c herpderp -> HeRpDeRp
+  mockbob herpderp     -> hErPdErP
+
+  mockbob herp a derp  -> hErP a DeRp
+  
+  mockbob -c herpderp  -> HeRpDeRp
   mockbob -r herpaderp -> HerPAdErP
-  mockbob -l herpaderp -> h3rp4d3rp`,
+  mockbob -l herpaderp -> h3rp4d3rp
+
+  echo "herpaderp" | mockbob   -> hErPdErP`,
 	Args: cobra.ArbitraryArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var b ports.Bob
+		var bob ports.Bob
 
-		b = st.NewStandardBobifier(startCaps)
-
-		if randomCaps {
-			b = r.NewRandomBobifier()
+		switch {
+		case randomCaps:
+			bob = random.NewRandomBobifier()
+		case leet:
+			bob = leetBob.NewLeetBobifier()
+		default:
+			bob = standard.NewStandardBobifier(startCaps)
 		}
 
-		if leet {
-			b = l.NewLeetBobifier()
-		}
+		app := domain.NewApp(bob)
 
 		// Validate if stdin passed
 		if isStdin() {
-			c := channeler(cmd.InOrStdin())
+			c := channeler.Channeler(cmd.InOrStdin())
 			for s := range c {
-				fmt.Print(b.Bobify((s)))
+				cmd.Print(app.Process((s)))
 			}
 			return nil
 		}
@@ -64,33 +74,9 @@ Examples:
 
 		input := strings.Join(args, " ")
 
-		cmd.Println(b.Bobify(input))
+		cmd.Println(app.Process(input))
 		return nil
 	},
-}
-
-func channeler(r io.Reader) <-chan string {
-	ch := make(chan string)
-
-	go func() {
-		buf := bufio.NewReader(r)
-
-		for {
-			l, err := buf.ReadString('\n')
-			if l != "" {
-				ch <- l
-			}
-
-			if err != nil {
-				break
-			}
-		}
-
-		close(ch)
-
-	}()
-
-	return ch
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -103,9 +89,10 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().BoolVarP(&startCaps, "start-caps", "c", false, "start the text with a capital letter")
-	rootCmd.Flags().BoolVarP(&randomCaps, "random-caps", "r", false, "randomize the capital letters through the text")
-	rootCmd.Flags().BoolVarP(&leet, "leet", "l", false, "convert text to 1337 5p34k")
+	rootCmd.Flags().BoolVarP(&startCaps, startCapsFlag, "c", false, "start the text with a capital letter")
+	rootCmd.Flags().BoolVarP(&randomCaps, randomCapsFlag, "r", false, "randomize the capital letters through the text")
+	rootCmd.Flags().BoolVarP(&leet, leetFlag, "l", false, "convert text to 1337 5p34k")
+	rootCmd.MarkFlagsMutuallyExclusive(startCapsFlag, randomCapsFlag, leetFlag)
 }
 
 func isStdin() bool {
